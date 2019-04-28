@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore, compose } from 'redux';
 
-import Reactotron from './src/reactotron'
 import Comp from './src/component'
-import reducer from './src/reducer'
 
-const store = createStore(reducer, compose(Reactotron.createEnhancer()))
+import createStore from './src/store'
 
+const store = createStore()
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',

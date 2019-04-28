@@ -13,9 +13,10 @@ class Comp extends Component {
         <Text>Here we go!</Text>
         <Text>isForeground: {this.props.appState.isForeground ? 'yes' : 'no'}</Text>
         <Text>counter: {this.props.appState.counter}</Text>
+        <Text>nothing: {this.props.appState.nothing ? 'yes' : 'no'}</Text>
         <Button
           title='do it!'
-          onPress={this.props.increase}
+          onPress={() => this.props.increase()}
         />
       </View>
     );
