@@ -1,19 +1,35 @@
-import { put, takeEvery, all, delay, fork, take, call } from 'redux-saga/effects'
+import { AppState } from 'react-native'
+import { put, all, delay, fork, take, call } from 'redux-saga/effects'
 
 
-function* helloSaga() {
-  console.log('Hello Sagas!')
+function isInForeground() {
+    return AppState.currentState === 'active';
 }
 
-export function* counterFn() {
-    console.log('inside saga')
-    yield put({ type: 'NOTHING' })
+export function* doSomethingIfOrWaitUntil(
+    fn,
+    initialStateEffect,
+    onState,
+) {
+    const isOn = yield initialStateEffect; // <-- isOn becomes undefined
+    if (!isOn) {
+        yield take(onState);
+    }
+    yield call(fn);
+}
+
+export function doWhenInForeground(fn) {
+    return doSomethingIfOrWaitUntil(fn, call(isInForeground), 'IN_FOREGROUND');
+}
+
+function something() {
+    console.log('success!')
 }
 
 export function* watchCounter() {
     while (true) {
         yield take('INCREASE_COUNTER')
-        yield call(counterFn)
+        yield doWhenInForeground(something);
     }
 }
 
@@ -22,6 +38,5 @@ export function* counterSaga() {
 }
 
 export default function* rootSaga() {
-  yield fork(helloSaga)
   yield fork(counterSaga)
 }
