@@ -1,13 +1,12 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+
+import Comp from './src/component'
+import reducer from './src/reducer'
+
+const store = createStore(reducer);
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -16,15 +15,17 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-type Props = {};
 export default class App extends Component<Props> {
   render() {
     return (
+      <Provider store={ store }>
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to React Native!</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
+        <Comp />
         <Text style={styles.instructions}>{instructions}</Text>
       </View>
+      </Provider>
     );
   }
 }
